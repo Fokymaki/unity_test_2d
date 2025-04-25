@@ -2,22 +2,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 5f;
+    public float speed = 5.0f;
+    private Rigidbody2D rb;
+    private Vector2 input;
 
-    private Rigidbody rb;
-
-    void Start()
+    private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>();
     }
-
     void Update()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-
-        rb.AddForce(movement * speed);
+        input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+    }
+    private void FixedUpdate()
+    {
+        rb.MovePosition(rb.position + input * speed * Time.fixedDeltaTime);
     }
 }
