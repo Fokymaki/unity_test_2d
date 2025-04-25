@@ -18,4 +18,9 @@ public class PlayerController : MonoBehaviour
     {
         rb.MovePosition(rb.position + input * speed * Time.fixedDeltaTime);
     }
+    public void Die()
+    {
+        Debug.Log("Игрок умер!");
+        Destroy(gameObject); // Удаляем игрока
+    }
 }
