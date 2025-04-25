@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -2395004113569754277}
   - component: {fileID: -8911371125696482529}
   - component: {fileID: 1246911536057678473}
+  - component: {fileID: 7101660667990791393}
   m_Layer: 0
   m_Name: chibi_robot3_0
   m_TagString: Enemy
@@ -127,8 +128,8 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!61 &1246911536057678473
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -175,3 +176,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 8.16, y: 8.71}
   m_EdgeRadius: 0
+--- !u!114 &7101660667990791393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781727959727313893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0caad99b94b25394fb68f40522e02756, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
+  wobbleAmount: 0.5
+  directionChangeInterval: 0.5
