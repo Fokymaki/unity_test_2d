@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
     public void Die()
     {
         Destroy(gameObject); // ”ничтожаем врага
+        Debug.Log("»грок убил врага!");
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
