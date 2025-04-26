@@ -71,10 +71,14 @@ public class PlayerController : MonoBehaviour
         Vector2 direction = (mouseWorldPos - transform.position);
         direction.Normalize();
 
-        // Создаём пульку
+        // Создаем пулю
         GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
 
-        // Двигаем её в сторону мышки
+        // Поворачиваем пулю (если носик смотрит вверх)
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle); // <-- ВАЖНО: минус 90 градусов
+
+        // Двигаем пулю
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.linearVelocity = direction * bulletSpeed;
     }
