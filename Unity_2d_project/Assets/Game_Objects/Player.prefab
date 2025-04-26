@@ -120,8 +120,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 669cf655c0d9ab0408105af5525b6c4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  Ammo: 10
+  baseSpeed: 5
+  currentSpeed: 5
+  dashSpeed: 300
+  dashTime: 0.1
+  playerAmmo: 10
   bulletPrefab: {fileID: 1741063933347245855, guid: 0d67d56588b98d84098a1ad32fab6979, type: 3}
   bulletSpeed: 10
 --- !u!1001 &624200817898767297
