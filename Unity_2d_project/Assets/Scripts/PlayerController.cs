@@ -1,5 +1,6 @@
 using UnityEngine;
 
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,11 +15,34 @@ public class PlayerController : MonoBehaviour
     public float bulletSpeed = 10f;
     private bool canDash = true;
     private bool dashing = false;
-    
+    public int basePlayerHP = 100;
+    private int currentPlayerHP;
+
+    [Header("Damage Visual Settings")]
+    public SpriteRenderer spriteRenderer; // —юда прив€жешь спрайт из инспектора
+    public Color damageColor = Color.red;
+    public float damageDuration = 0.5f;
+    private Color originalColor;
+
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        currentPlayerHP = basePlayerHP;
+
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        }
+
+        if (spriteRenderer != null)
+        {
+            originalColor = spriteRenderer.color;
+        }
+        else
+        {
+            Debug.LogWarning("SpriteRenderer не найден у игрока!");
+        }
     }
     void Update()
     {
@@ -81,5 +105,27 @@ public class PlayerController : MonoBehaviour
         // ƒвигаем пулю
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.linearVelocity = direction * bulletSpeed;
+    }
+    public void TakeDamage(int damage)
+    {
+        currentPlayerHP -= damage;
+        Debug.Log("Player HP: " + currentPlayerHP);
+
+        if (spriteRenderer != null)
+        {
+            StartCoroutine(DamageEffect());
+        }
+
+        if (currentPlayerHP <= 0)
+        {
+            Die();
+        }
+    }
+
+    IEnumerator DamageEffect()
+    {
+        spriteRenderer.color = damageColor;
+        yield return new WaitForSeconds(damageDuration);
+        spriteRenderer.color = originalColor;
     }
 }

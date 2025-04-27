@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1135810210696253271}
   - component: {fileID: 161068755518898188}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: EnemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -177,6 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletDamage: 5
+  bulletType: 1
 --- !u!58 &161068755518898188
 CircleCollider2D:
   m_ObjectHideFlags: 0

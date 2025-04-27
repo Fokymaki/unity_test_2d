@@ -2,10 +2,8 @@ using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
-
-    public GameObject bulletPrefab;
+    public GameObject bulletPrefab; // Префаб шарика
     public float bulletSpeed = 10f;
-    public Transform gunTransform; // Сюда в инспекторе подставишь пушку
 
     void Update()
     {
@@ -17,14 +15,24 @@ public class PlayerShooting : MonoBehaviour
 
     void Shoot()
     {
-        // Создаём пулю в позиции пушки
-        GameObject bullet = Instantiate(bulletPrefab, gunTransform.position, gunTransform.rotation);
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = (mouseWorldPos - transform.position);
+        direction.Normalize();
+
+        // Создаем пулю
+        GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
 
         // Получаем Rigidbody
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
-        // Направление прямо по пушке
-        Vector2 shootDirection = gunTransform.up; // В 2D вверх (ось Y) — это направление вперёд
-        rb.linearVelocity = shootDirection * bulletSpeed;
+        // Правильно поворачиваем пулю (если пуля "носом вверх")
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        rb.rotation = angle - 90f; // Поворот Rigidbody, а не transform!
+
+        // Выставляем скорость
+        rb.linearVelocity = direction * bulletSpeed;
+
+        
+       
     }
 }
