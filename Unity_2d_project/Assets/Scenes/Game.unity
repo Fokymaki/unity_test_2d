@@ -864,6 +864,18 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7101660667990791393, guid: af91d4b4a0f465e4a900ba36480deb43, type: 3}
+      propertyPath: speed
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101660667990791393, guid: af91d4b4a0f465e4a900ba36480deb43, type: 3}
+      propertyPath: swaySpeed
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101660667990791393, guid: af91d4b4a0f465e4a900ba36480deb43, type: 3}
+      propertyPath: detectionRadius
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1042,6 +1054,18 @@ PrefabInstance:
     - target: {fileID: 4254259582872695750, guid: 3668b294c3437dc4187164ad5476c5e2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101660667990791393, guid: 3668b294c3437dc4187164ad5476c5e2, type: 3}
+      propertyPath: speed
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101660667990791393, guid: 3668b294c3437dc4187164ad5476c5e2, type: 3}
+      propertyPath: swaySpeed
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101660667990791393, guid: 3668b294c3437dc4187164ad5476c5e2, type: 3}
+      propertyPath: detectionRadius
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1312,6 +1336,18 @@ PrefabInstance:
     - target: {fileID: 4387986151423434436, guid: af91d4b4a0f465e4a900ba36480deb43, type: 3}
       propertyPath: sceneViewId
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101660667990791393, guid: af91d4b4a0f465e4a900ba36480deb43, type: 3}
+      propertyPath: speed
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101660667990791393, guid: af91d4b4a0f465e4a900ba36480deb43, type: 3}
+      propertyPath: swaySpeed
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101660667990791393, guid: af91d4b4a0f465e4a900ba36480deb43, type: 3}
+      propertyPath: detectionRadius
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

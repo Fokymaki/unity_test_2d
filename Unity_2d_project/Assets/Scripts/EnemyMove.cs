@@ -4,47 +4,114 @@ using Photon.Pun;
 public class EnemyMove : MonoBehaviourPunCallbacks, IPunObservable
 {
     public float speed = 2f;
-    private Vector3 networkPosition; // Сюда будем получать позицию от других игроков
-    private Quaternion networkRotation; // Сюда будем получать поворот от других игроков
+    public float detectionRadius = 10f; // Р Р°РґРёСѓСЃ РІРёРґРёРјРѕСЃС‚Рё
+    public float swayAmount = 0.5f; // РђРјРїР»РёС‚СѓРґР° РїРѕРєР°С‡РёРІР°РЅРёСЏ
+    public float swaySpeed = 2f; // РЎРєРѕСЂРѕСЃС‚СЊ РїРѕРєР°С‡РёРІР°РЅРёСЏ
+    private Vector3 networkPosition;
+    private Quaternion networkRotation;
+
+    private Transform player;
+    private bool isPlayerInRange = false;
+    private float swayOffset = 0f; // РЎРјРµС‰РµРЅРёРµ РґР»СЏ РїРѕРєР°С‡РёРІР°РЅРёСЏ
+
+    private Rigidbody2D rb; // Р”РѕР±Р°РІР»СЏРµРј СЃСЃС‹Р»РєСѓ РЅР° Rigidbody2D
 
     private void Start()
     {
         networkPosition = transform.position;
         networkRotation = transform.rotation;
+        rb = GetComponent<Rigidbody2D>(); // РџРѕР»СѓС‡Р°РµРј Rigidbody2D
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (photonView.IsMine || PhotonNetwork.IsMasterClient)
         {
-            Move();
+            FindNearestPlayer(); // РС‰РµРј Р±Р»РёР¶Р°Р№С€РµРіРѕ РёРіСЂРѕРєР°
+            if (isPlayerInRange)
+            {
+                MoveTowardsPlayer();
+            }
+            else
+            {
+                IdleSway();
+            }
         }
         else
         {
-            // Плавно интерполируем позицию
-            transform.position = Vector3.Lerp(transform.position, networkPosition, Time.deltaTime * 10);
-            transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, Time.deltaTime * 10);
+            // РџР»Р°РІРЅРѕ РёРЅС‚РµСЂРїРѕР»РёСЂСѓРµРј РїРѕР·РёС†РёСЋ
+            transform.position = Vector3.Lerp(transform.position, networkPosition, Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, Time.deltaTime);
         }
     }
 
-    private void Move()
+    private void FindNearestPlayer()
     {
-        // Тут твоя логика движения врага
-        transform.Translate(Vector2.left * speed * Time.deltaTime); // Например, просто влево
+        // РџРѕР»СѓС‡Р°РµРј РІСЃРµС… РёРіСЂРѕРєРѕРІ РЅР° СЃС†РµРЅРµ
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        Transform closestPlayer = null;
+        float closestDistance = float.MaxValue;
+
+        // РС‰РµРј Р±Р»РёР¶Р°Р№С€РµРіРѕ РёРіСЂРѕРєР°
+        foreach (GameObject playerObj in players)
+        {
+            float distance = Vector3.Distance(transform.position, playerObj.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestPlayer = playerObj.transform;
+            }
+        }
+
+        if (closestPlayer != null && closestDistance <= detectionRadius)
+        {
+            player = closestPlayer;
+            isPlayerInRange = true;
+        }
+        else
+        {
+            isPlayerInRange = false;
+        }
     }
 
-    // Этот метод нужен для синхронизации по сети
+    private void MoveTowardsPlayer()
+    {
+        // РџР»Р°РІРЅРѕ РїРѕРєР°С‡РёРІР°РµРј NPC РїСЂРё РґРІРёР¶РµРЅРёРё
+        swayOffset = Mathf.Sin(Time.time * swaySpeed) * swayAmount;
+
+        // РќР°РїСЂР°РІР»РµРЅРёРµ РґРІРёР¶РµРЅРёСЏ NPC Рє РёРіСЂРѕРєСѓ
+        Vector3 directionToPlayer = (player.position - transform.position).normalized;
+
+        // Р”РІРёРіР°РµРјСЃСЏ Рє РёРіСЂРѕРєСѓ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј Rigidbody2D
+        Vector2 movement = new Vector2(directionToPlayer.x, directionToPlayer.y).normalized * speed;
+        rb.linearVelocity = new Vector2(movement.x, movement.y);
+
+        // РџРѕРІРѕСЂРѕС‚ NPC РІ СЃС‚РѕСЂРѕРЅСѓ РёРіСЂРѕРєР°
+        float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+        rb.rotation = angle;
+
+        // РџРѕРєР°С‡РёРІР°РЅРёРµ NPC
+        transform.position += transform.right * swayOffset;
+    }
+
+    private void IdleSway()
+    {
+        // РџРѕРєР°С‡РёРІР°РЅРёРµ РЅР° РјРµСЃС‚Рµ
+        swayOffset = Mathf.Sin(Time.time * swaySpeed) * swayAmount;
+        transform.position += transform.right * swayOffset;
+    }
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            // Мы отправляем свои данные
+            // РњС‹ РѕС‚РїСЂР°РІР»СЏРµРј СЃРІРѕРё РґР°РЅРЅС‹Рµ
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
         }
         else
         {
-            // Мы получаем данные
+            // РњС‹ РїРѕР»СѓС‡Р°РµРј РґР°РЅРЅС‹Рµ
             networkPosition = (Vector3)stream.ReceiveNext();
             networkRotation = (Quaternion)stream.ReceiveNext();
         }
