@@ -687,7 +687,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfa1406733df8784482bf9ca10e4e871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 6063350484721477773, guid: ac60b7573dd173e4f802feff6c388cde, type: 3}
+  playerPrefabs:
+  - {fileID: 6063350484721477773, guid: 89ed924a39505034aac60640c7e7eef1, type: 3}
+  - {fileID: 6063350484721477773, guid: b2da6c9c8754d3c4591854e164e6564b, type: 3}
+  - {fileID: 6063350484721477773, guid: ac60b7573dd173e4f802feff6c388cde, type: 3}
   minX: 0
   minY: 0
   maxX: 0
