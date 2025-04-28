@@ -53,7 +53,10 @@ public class PlayerController : MonoBehaviour
     {
         if(view.IsMine)
         {
-            input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            Vector2 moveAmmpount = moveInput.normalized * currentSpeed * Time.deltaTime;
+            transform.position += (Vector3)moveAmmpount;
+            //input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             if (Input.GetMouseButtonDown(0) && (playerAmmo > 0)) // Левая кнопка мыши
             {
                 Shoot();
@@ -79,10 +82,10 @@ public class PlayerController : MonoBehaviour
         }
        
     }
-    private void FixedUpdate()
+   /* private void FixedUpdate()
     {
         rb.MovePosition(rb.position + input * currentSpeed * Time.fixedDeltaTime);
-    }
+    }*/
     public void Die()
     {
         Debug.Log("Игрок умер!");
