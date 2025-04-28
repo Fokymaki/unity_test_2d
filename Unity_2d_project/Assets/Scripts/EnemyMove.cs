@@ -1,45 +1,52 @@
 using UnityEngine;
+using Photon.Pun;
 
-public class EnemyRandomMovement : MonoBehaviour
+public class EnemyMove : MonoBehaviourPunCallbacks, IPunObservable
 {
     public float speed = 2f;
-    public float wobbleAmount = 0.5f; // Насколько отклоняется от цели
-    public float directionChangeInterval = 0.5f; // Как часто обновляется направление
+    private Vector3 networkPosition; // Сюда будем получать позицию от других игроков
+    private Quaternion networkRotation; // Сюда будем получать поворот от других игроков
 
-    private Transform player;
-    private Vector2 currentDirection;
-    private float timer;
-
-    void Start()
+    private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        PickDirection();
+        networkPosition = transform.position;
+        networkRotation = transform.rotation;
     }
 
-    void Update()
+    private void Update()
     {
-        transform.Translate(currentDirection * speed * Time.deltaTime);
-
-        timer += Time.deltaTime;
-        if (timer >= directionChangeInterval)
+        if (photonView.IsMine || PhotonNetwork.IsMasterClient)
         {
-            PickDirection();
-            timer = 0f;
+            Move();
+        }
+        else
+        {
+            // Плавно интерполируем позицию
+            transform.position = Vector3.Lerp(transform.position, networkPosition, Time.deltaTime * 10);
+            transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, Time.deltaTime * 10);
         }
     }
 
-    void PickDirection()
+    private void Move()
     {
-        if (player == null) return;
+        // Тут твоя логика движения врага
+        transform.Translate(Vector2.left * speed * Time.deltaTime); // Например, просто влево
+    }
 
-        Vector2 toPlayer = (player.position - transform.position).normalized;
-
-        // Добавим случайное смещение
-        Vector2 randomOffset = new Vector2(
-            Random.Range(-wobbleAmount, wobbleAmount),
-            Random.Range(-wobbleAmount, wobbleAmount)
-        );
-
-        currentDirection = (toPlayer + randomOffset).normalized;
+    // Этот метод нужен для синхронизации по сети
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // Мы отправляем свои данные
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else
+        {
+            // Мы получаем данные
+            networkPosition = (Vector3)stream.ReceiveNext();
+            networkRotation = (Quaternion)stream.ReceiveNext();
+        }
     }
 }

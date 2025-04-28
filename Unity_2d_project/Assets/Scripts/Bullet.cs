@@ -1,32 +1,59 @@
 using UnityEngine;
+using Photon.Pun;
 
 public class Bullet : MonoBehaviour
 {
     public int bulletDamage = 5;
-    public int bulletType = 0; //0 Это игрока, 1 врагов
+    public int bulletType = 0; // 0 - игрока, 1 - врагов
+
     void Start()
     {
-        Destroy(gameObject, 5f); // Удалить объект через 5 секунд
+        DestroyBullet(5f); // Удалить объект через 5 секунд
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       
-        if (collision.CompareTag("Enemy") && bulletType == 0) // Проверяем, враг ли это
+        if (collision.CompareTag("Enemy") && bulletType == 0)
         {
-            collision.GetComponent<Enemy>()?.TakeDamage(bulletDamage); // Убиваем врага
-                                                                       // Удаляем пулю
-            Destroy(gameObject);
+            PhotonView enemyView = collision.GetComponent<PhotonView>();
+            Debug.Log("Попал!");
+            if (enemyView != null)
+            {
+                enemyView.RPC("TakeDamage", RpcTarget.All, bulletDamage);
+            }
+            DestroyBullet();
         }
+        else if (collision.CompareTag("Player") && bulletType == 1)
+        {
+            PhotonView playerView = collision.GetComponent<PhotonView>();
+            if (playerView != null)
+            {
+                playerView.RPC("TakeDamage", RpcTarget.All, bulletDamage);
+            }
+            DestroyBullet();
+        }
+        else if (collision.CompareTag("Object"))
+        {
+            DestroyBullet();
+        }
+    }
 
-       else if (collision.CompareTag("Player") && bulletType == 1) // Проверяем, игрок ли это
-       {
-            collision.GetComponent<PlayerController>()?.TakeDamage(bulletDamage); // Наносим урон игроку
-
-            Destroy(gameObject);
-       }
-       else if (collision.CompareTag("Object"))
-       {
-            Destroy(gameObject);
-       }
+    private void DestroyBullet(float delay = 0f)
+    {
+        if (delay > 0f)
+        {
+            Destroy(gameObject, delay);
+        }
+        else
+        {
+            if (GetComponent<PhotonView>() != null && GetComponent<PhotonView>().IsMine)
+            {
+                PhotonNetwork.Destroy(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 }

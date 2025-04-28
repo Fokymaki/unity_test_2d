@@ -82,10 +82,6 @@ public class PlayerController : MonoBehaviour
         }
        
     }
-   /* private void FixedUpdate()
-    {
-        rb.MovePosition(rb.position + input * currentSpeed * Time.fixedDeltaTime);
-    }*/
     public void Die()
     {
         Debug.Log("Игрок умер!");
@@ -118,6 +114,7 @@ public class PlayerController : MonoBehaviour
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.linearVelocity = direction * bulletSpeed;
     }
+    [PunRPC]
     public void TakeDamage(int damage)
     {
         currentPlayerHP -= damage;

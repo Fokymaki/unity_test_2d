@@ -14,9 +14,11 @@ GameObject:
   - component: {fileID: -8911371125696482529}
   - component: {fileID: 1246911536057678473}
   - component: {fileID: 7101660667990791393}
-  - component: {fileID: -3759964338719092424}
-  m_Layer: 0
-  m_Name: chibi_robot3_0
+  - component: {fileID: 2464324909034180039}
+  - component: {fileID: -104805938870367594}
+  - component: {fileID: 3342819401965647685}
+  m_Layer: 8
+  m_Name: Shooter
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,8 +33,8 @@ Transform:
   m_GameObject: {fileID: 1781727959727313893}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.008726558, w: 0.999962}
-  m_LocalPosition: {x: 6.01, y: 2.08, z: 0}
-  m_LocalScale: {x: 0.166, y: 0.166, z: 0.166}
+  m_LocalPosition: {x: 6.8545, y: -3.3537, z: 0}
+  m_LocalScale: {x: 0.15498596, y: 0.15498593, z: 0.15498595}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -196,9 +198,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  wobbleAmount: 0.5
-  directionChangeInterval: 0.5
---- !u!114 &-3759964338719092424
+--- !u!114 &2464324909034180039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781727959727313893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd5b14e4f22f86c49863fc4c04fd07a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 1741063933347245855, guid: f12013d22f9091041ba3264c85836d6a, type: 3}
+  bulletSpeed: 15
+  shootInterval: 1
+--- !u!114 &-104805938870367594
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -231,3 +246,27 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &3342819401965647685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781727959727313893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 7101660667990791393}
+  - {fileID: -104805938870367594}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
