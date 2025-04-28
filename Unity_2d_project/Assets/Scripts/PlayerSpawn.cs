@@ -1,32 +1,27 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
-using Photon.Realtime;
-using UnityEngine.SceneManagement;
 
-
-public class PlayerSpawn : MonoBehaviourPunCallbacks
+public class PlayerSpawn : MonoBehaviour
 {
-    public GameObject[] playerPrefabs;
+    public GameObject[] playerPrefabs;  // Массив всех возможных персонажей
+    public GameObject cameraPrefab;      // Префаб камеры
+
     public float minX, minY, maxX, maxY;
 
     void Start()
     {
-        string selectedCharacterName = "";
+        // Спавним персонажа и камеру для локального игрока
+        string savedCharacterName = PlayerPrefs.GetString("SelectedCharacter", "");
 
-        // Получаем имя персонажа из Custom Properties
-        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("character"))
+        if (!string.IsNullOrEmpty(savedCharacterName))
         {
-            selectedCharacterName = (string)PhotonNetwork.LocalPlayer.CustomProperties["character"];
+            SpawnCharacter(savedCharacterName);
         }
         else
         {
             Debug.LogWarning("Персонаж не выбран! Спавним стандартного.");
-            selectedCharacterName = playerPrefabs[0].name;
+            SpawnCharacter(playerPrefabs[0].name); // Если не выбран - первый
         }
-
-        SpawnCharacter(selectedCharacterName);
     }
 
     void SpawnCharacter(string characterName)
@@ -49,6 +44,19 @@ public class PlayerSpawn : MonoBehaviourPunCallbacks
         }
 
         Vector3 randomPosition = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), -1);
-        PhotonNetwork.Instantiate(prefabToSpawn.name, randomPosition, Quaternion.identity);
+        GameObject playerObject = PhotonNetwork.Instantiate(prefabToSpawn.name, randomPosition, Quaternion.identity);
+
+        // Создаем камеру для этого игрока
+        CreatePlayerCamera(playerObject);
+    }
+
+    void CreatePlayerCamera(GameObject playerObject)
+    {
+        // Создаем камеру для игрока
+        GameObject playerCamera = Instantiate(cameraPrefab);
+        playerCamera.GetComponent<PlayerCamera>().player = playerObject.transform;  // Устанавливаем цель для камеры
+
+        // Дополнительные настройки камеры, если нужно
+        playerCamera.transform.SetParent(playerObject.transform);
     }
 }
