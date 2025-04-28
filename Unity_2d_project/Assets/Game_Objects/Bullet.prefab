@@ -177,6 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletDamage: 5
+  bulletType: 0
 --- !u!58 &161068755518898188
 CircleCollider2D:
   m_ObjectHideFlags: 0
