@@ -12,7 +12,7 @@ public class PlayerSpawn : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Vector2 randomPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
+        Vector3 randomPosition = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY),-1);
         PhotonNetwork.Instantiate(player.name, randomPosition, Quaternion.identity);
     }
 
