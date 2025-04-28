@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      elza_brice2_0: 7781466409162400728
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
