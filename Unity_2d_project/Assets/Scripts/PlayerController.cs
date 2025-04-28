@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour
@@ -24,10 +26,13 @@ public class PlayerController : MonoBehaviour
     public float damageDuration = 0.5f;
     private Color originalColor;
 
+    PhotonView view;
+
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+       // rb = GetComponent<Rigidbody2D>();
+       view = GetComponent<PhotonView>();
         currentPlayerHP = basePlayerHP;
 
         if (spriteRenderer == null)
@@ -46,29 +51,33 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        if (Input.GetMouseButtonDown(0) && (playerAmmo > 0)) // Левая кнопка мыши
+        if(view.IsMine)
         {
-            Shoot();
-            playerAmmo--;
-        }
-        if (Input.GetKeyDown(KeyCode.Space) && canDash)
-        {
-            Debug.Log("Кувырок");
-            Dash();
-            dashTime = 0.1f;
-        }
-        if (dashing)
-        {
-            dashTime -= Time.deltaTime;
-            if (dashTime < 0)
+            input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            if (Input.GetMouseButtonDown(0) && (playerAmmo > 0)) // Левая кнопка мыши
             {
-                dashing = false;
-                canDash = true;
-                currentSpeed = baseSpeed;
-              
+                Shoot();
+                playerAmmo--;
+            }
+            if (Input.GetKeyDown(KeyCode.Space) && canDash)
+            {
+                Debug.Log("Кувырок");
+                Dash();
+                dashTime = 0.1f;
+            }
+            if (dashing)
+            {
+                dashTime -= Time.deltaTime;
+                if (dashTime < 0)
+                {
+                    dashing = false;
+                    canDash = true;
+                    currentSpeed = baseSpeed;
+
+                }
             }
         }
+       
     }
     private void FixedUpdate()
     {
