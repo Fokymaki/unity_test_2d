@@ -6,21 +6,34 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    public float baseSpeed = 5.0f;
-    public float currentSpeed = 5.0f;
-    public float dashSpeed = 300f;
-    public float dashTime = 0.1f;
+    [Header("Характеристики персонажа")]
+    public int baseStrength = 1;
+    public int baseStamina = 1;
+    public int baseAgility = 1;
+    public int baseIntelligence = 1;
+    private int currentStrength, currentStamina, currentAgility, currentIntelligence;
+    private float baseSpeed = 5.0f;
+    private int basePlayerHP = 100;
+    private float currentSpeed = 5.0f;
+    private float dashSpeed = 300f;
+    private float dashTime = 0.1f;
     private Rigidbody2D rb;
     private Vector2 input;
+    [Header("Инвентарь персонажа")]
+    public int defence = 10;
     public int playerAmmo = 10;
+    public GameObject[] weapon;
     public GameObject bulletPrefab; // Префаб шарика
-    public float bulletSpeed = 10f;
+    private float bulletSpeed = 10f;
     private bool canDash = true;
     private bool dashing = false;
-    public int basePlayerHP = 100;
+
+    public LayerMask enemyLayer;
+    public float attackRange = 5f;
+    public Transform attackPoint;
     private int currentPlayerHP;
 
-    [Header("Damage Visual Settings")]
+    [Header("Стрельба")]
     public SpriteRenderer spriteRenderer; // Сюда привяжешь спрайт из инспектора
     public Color damageColor = Color.red;
     public float damageDuration = 0.5f;
@@ -32,8 +45,8 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
        // rb = GetComponent<Rigidbody2D>();
-       view = GetComponent<PhotonView>();
-        currentPlayerHP = basePlayerHP;
+        view = GetComponent<PhotonView>();
+        CharacterBaseStats();
 
         if (spriteRenderer == null)
         {
@@ -61,6 +74,10 @@ public class PlayerController : MonoBehaviour
             {
                 Shoot();
                 playerAmmo--;
+            }
+            if (Input.GetMouseButtonDown(1)) // Левая кнопка мыши
+            {
+                MeleeAtack();
             }
             if (Input.GetKeyDown(KeyCode.Space) && canDash)
             {
@@ -114,6 +131,19 @@ public class PlayerController : MonoBehaviour
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.linearVelocity = direction * bulletSpeed;
     }
+    public void MeleeAtack()
+    {
+        Collider2D[] hitEnemys = Physics2D.OverlapCircleAll(attackPoint.position,attackRange,enemyLayer); 
+        foreach(Collider2D enemy in hitEnemys)
+        {
+            Debug.Log("Ударил врага " + enemy);
+            enemy.GetComponent<Enemy>().TakeDamage(20);
+        }
+    }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(attackPoint.position,attackRange); // Gizmoz почитать
+    }
     [PunRPC]
     public void TakeDamage(int damage)
     {
@@ -136,5 +166,19 @@ public class PlayerController : MonoBehaviour
         spriteRenderer.color = damageColor;
         yield return new WaitForSeconds(damageDuration);
         spriteRenderer.color = originalColor;
+    }
+    public void CharacterBaseStats()
+    {
+        
+        basePlayerHP =  1000 * baseStamina;
+        baseSpeed = 1 * baseAgility;
+
+        currentStrength = baseStrength;
+        currentAgility = baseAgility;
+        currentIntelligence = baseIntelligence;
+        currentStamina = baseStamina;
+        currentAgility = baseAgility;
+        currentSpeed = baseSpeed;
+        currentPlayerHP = basePlayerHP;
     }
 }

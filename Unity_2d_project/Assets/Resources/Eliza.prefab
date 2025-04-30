@@ -141,6 +141,37 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 1
   m_UseLocal: 1
+--- !u!1 &4665249279724278701
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6792454683633118540}
+  m_Layer: 0
+  m_Name: MelleeAtackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6792454683633118540
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4665249279724278701}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2327414841766361001}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6063350484721477773
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,6 +207,7 @@ Transform:
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 6792454683633118540}
   - {fileID: 8409467925324415205}
   - {fileID: 3669313640428756111}
   m_Father: {fileID: 0}
@@ -265,14 +297,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 669cf655c0d9ab0408105af5525b6c4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 5
-  currentSpeed: 5
-  dashSpeed: 15
-  dashTime: 0.1
+  baseStrength: 1
+  baseStamina: 1
+  baseAgility: 1
+  baseIntelligence: 1
+  defence: 10
   playerAmmo: 199
+  weapon: []
   bulletPrefab: {fileID: 1741063933347245855, guid: 1de5eee80e23769449e01a7ab9eaf95b, type: 3}
-  bulletSpeed: 10
-  basePlayerHP: 100
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  attackRange: 1
+  attackPoint: {fileID: 6792454683633118540}
   spriteRenderer: {fileID: 0}
   damageColor: {r: 1, g: 0, b: 0, a: 1}
   damageDuration: 0.1
