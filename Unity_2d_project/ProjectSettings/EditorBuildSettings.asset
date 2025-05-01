@@ -6,19 +6,19 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/T7SQ/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Scenes/Loading_scene.unity
+    path: Assets/Scenes/T7SQ/Loading_scene.unity
     guid: 24ea3e57c65bb9e47857f784ab919d37
   - enabled: 1
-    path: Assets/Scenes/Player_controller.unity
+    path: Assets/Scenes/T7SQ/Player_controller.unity
     guid: bfa280ae7ee4834458f322bdbcc5a68c
   - enabled: 1
-    path: Assets/Scenes/Menu.unity
+    path: Assets/Scenes/T7SQ/Menu.unity
     guid: e1f145a7dccc80c4798a10081207cbe1
   - enabled: 1
-    path: Assets/Scenes/Game.unity
+    path: Assets/Scenes/T7SQ/Game.unity
     guid: 61f809c198052404ea8e5958a7ac2e5f
   - enabled: 1
     path: Assets/Scenes/Lobby map.unity
